@@ -17,22 +17,24 @@ def cmd():
 
 
 @cmd.command("list2")
-def list2():
+@click.pass_context
+def list2(ctx: click.Context):
     click.echo("command: list2")
-    click.echo("name\t\tid\ttwh\tbwh\tpid")
-    for meta in console.list2():
+    from tabulate import tabulate
+    headers = ["name", "id", "twh", "bwh", "pid"]
+    data = []
+    scope = ctx.obj.get("scope", console.list2())
+    for meta in scope:
         if meta["id"] == 0:
             continue
-        meta: List2Meta
-        string = ""
-        string += meta["name"] + "\t\t"
-        string += str(meta["id"]) + "\t"
-        string += str(meta["top_window_handle"]) + "\t"
-        string += str(meta["bind_window_handle"]) + "\t"
-        string += str(meta["pid"])
-        click.echo(string)
-
-
+        data.append([
+            meta["name"],
+            meta["id"],
+            meta["top_window_handle"],
+            meta["bind_window_handle"],
+            meta["pid"]
+        ])
+    click.echo(tabulate(data, headers=headers, tablefmt="plain"))
 #
 
 

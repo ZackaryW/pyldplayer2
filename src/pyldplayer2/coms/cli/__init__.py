@@ -33,6 +33,7 @@ def cli(ctx: click.Context, debug: bool, query: str, interval: int):
     if query:
         results = Query().query(query)
         console.setScope(results)
+        ctx.obj["scope"] = results
     else:
         results = Query().query(console.scope)
     click.echo(f"scope: {get_affected_string(results)}")

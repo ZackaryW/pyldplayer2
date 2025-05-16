@@ -7,6 +7,10 @@ def test_query_str():
         query_str(q1) == 'id > 3 and name.startswith("a") and _ld_re_search("*b", name)'
     )
 
+    # regex
+    q2 = "a.*"
+    assert query_str(q2) == '_ld_re_search("a.*", name)'
+
 
 def test_op_index_parse():
     # Test positive indices

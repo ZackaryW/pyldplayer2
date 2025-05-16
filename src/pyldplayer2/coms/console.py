@@ -125,7 +125,12 @@ class Console(I.IConsole, UseAppAttr):
             arglist.extend(["--root", 1 if root else 0])
         open_detached(self.attr.ldconsole, "modify", *arglist)
 
-    def operaterecord(self, name: str | None = None, index: int | None = None, content: str | Record | None = None):
+    def operaterecord(
+        self,
+        name: str | None = None,
+        index: int | None = None,
+        content: str | Record | None = None,
+    ):
         assert content is not None, "content is required"
         cmd = ["operaterecord"]
         if name is not None:
@@ -135,9 +140,11 @@ class Console(I.IConsole, UseAppAttr):
         if isinstance(content, Record):
             import json
             from dataclasses import asdict
+
             content = json.dumps(asdict(content))
         cmd.extend(["--content", content])
         open_detached(self.attr.ldconsole, *cmd)
+
 
 def _create_simple_exec_method(command: str):
     def method(self) -> None:

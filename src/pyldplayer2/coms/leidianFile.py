@@ -7,6 +7,7 @@ import os
 from pyldplayer2.base.objects.pathcache import MtimeProp, PathCache
 from pyldplayer2.coms.instanceQuery import ALL_QUERY_TYPES, Query
 
+
 class LeidianFile(UseAppAttr):
     @staticmethod
     @PathCache.register("leidians")
@@ -19,16 +20,20 @@ class LeidianFile(UseAppAttr):
     def loadLeidian(path: str):
         with open(path, "r") as f:
             return LeidianConfig.from_dict(json.load(f))
-        
+
     @MtimeProp("attr.config")
     def listLeidianConfigs(self):
         return [
             os.path.join(self.attr.config, file)
             for file in os.listdir(self.attr.config)
-            if file.endswith(".config") and file.startswith("leidian") and file != "leidians.config"
+            if file.endswith(".config")
+            and file.startswith("leidian")
+            and file != "leidians.config"
         ]
-    
-    def getConfig(self, query : ALL_QUERY_TYPES | None = None) -> typing.Union[LeidiansConfig, typing.Dict[int, LeidianConfig]]:
+
+    def getConfig(
+        self, query: ALL_QUERY_TYPES | None = None
+    ) -> typing.Union[LeidiansConfig, typing.Dict[int, LeidianConfig]]:
         is_string = isinstance(query, str)
         is_int = isinstance(query, int)
         if query is None or (is_string and query.startswith("leidians")):
@@ -42,17 +47,16 @@ class LeidianFile(UseAppAttr):
                     os.path.join(self.attr.config, f"leidian{query}.config"), "leidian"
                 )
             }
-        
+
         if is_string and query.startswith("leidian"):
             return {
                 int(query[7:]): PathCache.getContents(
                     os.path.join(self.attr.config, f"{query}.config"), "leidian"
                 )
             }
-        
-            
+
         q = Query(self.attr)
-        metas =  q.queryInts(query)
+        metas = q.queryInts(query)
         return {
             meta: PathCache.getContents(
                 os.path.join(self.attr.config, f"leidian{meta}.config"), "leidian"
@@ -63,7 +67,9 @@ class LeidianFile(UseAppAttr):
     def dumpLeidians(self, config: LeidiansConfig):
         with open(os.path.join(self.attr.config, "leidians.config"), "w") as f:
             json.dump(config.to_dict(), f, indent=4)
-            
+
     def dumpLeidian(self, config: LeidianConfig):
-        with open(os.path.join(self.attr.config, f"leidian{config.id}.config"), "w") as f:
+        with open(
+            os.path.join(self.attr.config, f"leidian{config.id}.config"), "w"
+        ) as f:
             json.dump(config.to_dict(), f, indent=4)

@@ -56,7 +56,6 @@ class LeidiansConfig:
     operaRecordFirstDo: bool = False
     remoteEntranceVersion: int = 0
 
-
     @classmethod
     def from_dict(cls, data: dict):
         data = parse_dotted_dict(data)

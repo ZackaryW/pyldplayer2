@@ -33,7 +33,7 @@ class RecordFile(UseAppAttr):
             data = json.load(f)
             return Record(
                 recordInfo=RecordInfo(**data["recordInfo"]),
-                operations=[Operation(**operation) for operation in data["operations"]]
+                operations=[Operation(**operation) for operation in data["operations"]],
             )
 
     def dump(self, path: str, record: Record):

@@ -6,5 +6,12 @@ from .coms.smpFile import SMPFile
 from .coms.kmpFile import KMPFile
 from .coms.instanceQuery import Query
 
-__all__ = ["BatchConsole", "Console", "LeidianFile", "RecordFile", "SMPFile", "KMPFile", "Query"]
-
+__all__ = [
+    "BatchConsole",
+    "Console",
+    "LeidianFile",
+    "RecordFile",
+    "SMPFile",
+    "KMPFile",
+    "Query",
+]

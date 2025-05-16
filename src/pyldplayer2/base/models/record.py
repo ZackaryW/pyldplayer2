@@ -17,6 +17,7 @@ class Operation:
     points: List[Point] = field(default_factory=list)
     text: Optional[str] = field(default=None)
 
+
 class RecordInfo(TypedDict):
     loopType: int
     loopTimes: int

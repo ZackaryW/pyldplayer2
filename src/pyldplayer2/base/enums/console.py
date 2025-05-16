@@ -26,7 +26,6 @@ VARIED_EXEC_LIST = [
     "backupapp",
     "restoreapp",
     "launchex",
-    
 ]
 
 

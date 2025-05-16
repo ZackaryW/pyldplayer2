@@ -190,8 +190,6 @@ class IConsole:
     ):
         pass
 
-    
-
     # simple query
     list: typing.Callable[["IConsole"], None]
     runninglist: typing.Callable[["IConsole"], None]

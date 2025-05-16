@@ -15,7 +15,10 @@ ALL_STRING_OPS = [
     "rindex",
 ]
 
-ALL_QUERY_TYPES = typing.Union[str, int, typing.List[int], typing.List[str], typing.List[typing.Union[int, str]]]
+ALL_QUERY_TYPES = typing.Union[
+    str, int, typing.List[int], typing.List[str], typing.List[typing.Union[int, str]]
+]
+
 
 def op_index_parse(string: str):
     """
@@ -43,6 +46,9 @@ def op_index_parse(string: str):
 
 
 def query_str(string: str):
+    if "*" in string and " " not in string:
+        string = f"name({string})"
+
     # split by parts
     parts = string.split()
 
@@ -85,7 +91,7 @@ class Query(UseAppAttr):
 
         if isinstance(query, str) and query == "all":
             return Console(self.attr).list2()
-        
+
         if isinstance(query, str) and query == "running":
             c = Console(self.attr)
             ret = []
@@ -98,8 +104,6 @@ class Query(UseAppAttr):
             query = [query]
 
         query = [int(i) if isinstance(i, str) and i.isdigit() else i for i in query]
-
-        
 
         list2s = Console(self.attr).list2()
 
@@ -118,7 +122,7 @@ class Query(UseAppAttr):
         limit: int = -1,
     ) -> list[List2Meta]:
         """Query LDPlayer instances with flexible query syntax.
-        
+
         Args:
             query: Query can be one of:
                 - str: Query string with conditions
@@ -136,16 +140,16 @@ class Query(UseAppAttr):
             query("id[1:5]")  # IDs between 1 and 5
             query("name.contains('dev')")  # Names containing 'dev'
             query("name(*dev*)")  # Names matching regex pattern
-            
+
             # Direct ID/name queries
             query(1)  # Instance with ID 1
             query([1, 2, 3])  # Instances with IDs 1, 2, 3
             query(["test1", "test2"])  # Instances named 'test1', 'test2'
-            
+
             # Special queries
             query("all")  # All instances
             query("running")  # All running instances
-            
+
             # With options
             query("name.startswith('test')", retType="first")  # First matching instance
             query("id[1:5]", limit=2)  # Maximum 2 results
@@ -157,8 +161,10 @@ class Query(UseAppAttr):
             if limit > 0:
                 return query[:limit]
             return query
-        
-        if not isinstance(query, str) or (" " not in query and re.match(r"^[A-Za-z0-9_-]+$", query)):
+
+        if not isinstance(query, str) or (
+            " " not in query and re.match(r"^[A-Za-z0-9_-]+$", query)
+        ):
             ret = self.__other_type_query(query)
             if retType == "first":
                 return ret[:1]
@@ -200,5 +206,3 @@ class Query(UseAppAttr):
         limit: int = -1,
     ) -> list[str]:
         return [i["name"] for i in self.query(string, retType, limit)]
-
-

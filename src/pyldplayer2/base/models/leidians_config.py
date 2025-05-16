@@ -59,6 +59,7 @@ class LeidiansConfig:
 
     @classmethod
     def from_dict(cls, data: dict):
+        data = parse_dotted_dict(data)
         data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
 
         return cls(**data)

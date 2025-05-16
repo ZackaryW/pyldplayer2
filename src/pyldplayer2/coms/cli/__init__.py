@@ -1,7 +1,7 @@
 import click
 
 from pyldplayer2.coms.instanceQuery import Query
-from .layout import CustomGroup, get_affected_string
+from .layout import get_affected_string
 
 importExceptions = None
 try:

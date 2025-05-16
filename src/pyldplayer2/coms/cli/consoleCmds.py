@@ -1,7 +1,6 @@
 import click
 from pyldplayer2.coms.batchConsole import BatchConsole
 from pyldplayer2.utils.discover import discover
-from pyldplayer2.base.models.list2meta import List2Meta
 from .layout import CustomGroup
 
 try:
